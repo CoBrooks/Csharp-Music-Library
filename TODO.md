@@ -2,7 +2,7 @@
 
 ## POCOs
 
-* ***Note***
+* ***Note*** :heavy_check_mark:
     1. Name (C, F#) - string
     2. Octave (1 - 7) - int
         * omits A0 / Bb0 / B0 and C8
@@ -10,7 +10,7 @@
     4. Duration (1 = quarter, 0.5 = eighth, 4 = whole) - double
     5. DisplayName ("C# 3") - string
 
-* ***Key***
+* ***Key*** :heavy_check_mark:
     1. RootNote - Note or string(?)
     2. KeyMode - Scale.(Major, Minor, Dorian, etc) = List<1/2 or whole steps>
     3. Notes - List\<Note>
@@ -29,7 +29,7 @@
 
 ## Enums / Static Classes / Needed Lists
 
-* ***Scale***
+* ***Scale*** :heavy_check_mark:
     1. Major = 2212221
     2. Dorian = 2122212
     3. Phrygian = 1222122

@@ -21,7 +21,7 @@ namespace MusicLib.Core
         public const double Asharp = 58.27047, Bflat = Asharp;
         public const double B = 61.73541, Cflat = B;
 
-        public static double GetFreq(string noteName)
+        public static double GetFrequency(string noteName)
         {
             try
             {
