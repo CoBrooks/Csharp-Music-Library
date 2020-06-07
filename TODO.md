@@ -22,11 +22,6 @@
     3. ChordKey (C, Em) - Key
     4. DisplayName (Am, Chalf-dim7, D7, Em7, Gmaj7, F#11(add2)) - string
 
-* ***Score***
-    1. BeatPrecision = how precisely the score should iterate over beats - double
-    2. Beats - List\<Chords>
-    3. BPM / Tempo - int
-
 ## Enums / Static Classes / Needed Lists
 
 * ***Scale*** :heavy_check_mark:
@@ -44,6 +39,6 @@
     5. HalfDiminished
     6. Dominant
 
-* ***Frequencies***
+* ***Frequencies*** :heavy_check_mark:
     1. A = 55.00000
     2. etc

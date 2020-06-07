@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -15,10 +16,11 @@ namespace MusicLib.Core
         public const string Phrygian = "1222122";
         public const string Lydian = "2221221";
         public const string Mixolydian = "2212212";
-        public const string Minor = "2122122", Aeolian = Minor;
+        public const string Minor = "2122122", Aeolian = Minor, NaturalMinor = Minor;
         public const string Locrian = "1221222";
 
         // Other Scales
+        public const string HarmonicMinor = "2122131";
     }
 
     public static class ChromaticScale
@@ -42,8 +44,8 @@ namespace MusicLib.Core
             {
                 noteName = noteName.First().ToString().ToUpper() + noteName.Substring(1).ToLower();
 
-                List<FieldInfo> freqs = typeof(ChromaticScale).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).ToList();
-                var index = (int)freqs.First(n => n.Name == noteName).GetValue(null);
+                List<FieldInfo> fields = typeof(ChromaticScale).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).ToList();
+                var index = (int)fields.First(n => n.Name == noteName).GetValue(null);
 
                 return index;
             }
@@ -53,5 +55,21 @@ namespace MusicLib.Core
             }
         }
 
+        public static string GetNoteNameFromIndex(int interval)
+        {
+            interval %= 12;
+
+            try
+            {
+                List<FieldInfo> fields = typeof(ChromaticScale).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).ToList();
+                var name = fields.First(f => (int)f.GetValue(null) == interval).Name;
+
+                return name;
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Interval not Recognized: {interval}");
+            }
+        }
     }
 }

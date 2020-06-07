@@ -22,7 +22,7 @@ namespace MusicLib.Core
 
             int currentLetterIndex = noteNames.IndexOf(RootNote.Name[0]) + 1;
 
-            for (int i = 0; i < Mode.Length; i++)
+            foreach (var i in Mode)
             {
                 Note next = new Note
                 {
@@ -34,11 +34,11 @@ namespace MusicLib.Core
 
                 var distFromPrev = notes.Last().DistanceBetween(next);
 
-                if (distFromPrev < Mode[i] - '0') // subtract by '0' to get the int of a char ('1' - '0' = 1, but '1' - 0 != 1)
+                if (distFromPrev < i - '0') // subtract by '0' to get the int of a char ('1' - '0' = 1, but '1' - 0 != 1)
                 {
                     next.Name += "sharp";
                 }
-                else if (distFromPrev > Mode[i] - '0')
+                else if (distFromPrev > i - '0')
                 {
                     next.Name += "flat";
                 }
