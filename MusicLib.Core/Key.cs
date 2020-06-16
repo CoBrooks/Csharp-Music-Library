@@ -13,10 +13,9 @@ namespace MusicLib.Core
 
         public List<Note> Notes => _getNotes();
 
-
         private List<Note> _getNotes()
         {
-            var notes = new List<Note> {RootNote};
+            var notes = new List<Note> { RootNote };
 
             string noteNames = "CDEFGAB";
 
@@ -34,7 +33,7 @@ namespace MusicLib.Core
 
                 var distFromPrev = notes.Last().DistanceBetween(next);
 
-                if (distFromPrev < i - '0') // subtract by '0' to get the int of a char ('1' - '0' = 1, but '1' - 0 != 1)
+                if (distFromPrev < i - '0') // subtract by '0' to get the int of a char ('1' - '0' = 1, but '1' - 0 != 1). Equivalent to "Convert.ToInt32(i)".
                 {
                     next.Name += "sharp";
                 }

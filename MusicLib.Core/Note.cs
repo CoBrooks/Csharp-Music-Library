@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MusicLib.Core
@@ -21,13 +22,73 @@ namespace MusicLib.Core
         public Note GetInterval(int interval)
         {
             Note note = new Note();
-            
-            int rootIndex = ChromaticScale.GetNoteIndex(Name);
 
-            note.Name = ChromaticScale.GetNoteNameFromIndex(rootIndex + interval);
-            note.Octave = Octave + (interval / 12);
+            int rootIndex = ChromaticScale.GetNoteIndex(Name);
+            note.Name = ChromaticScale.GetNoteNameFromIndex(ChromaticScale.NormalizeInterval(rootIndex + interval));
+
+            string noteNames = "CDEFGAB";
+
+            note.Octave = Octave;
+            note.Octave += (noteNames.IndexOf(note.Name[0]) <= noteNames.IndexOf(Name[0]) && interval != 0) ? 1 : 0;
+            note.Octave += interval > 11 ? 1 : 0;
+
+            int newIndex = ChromaticScale.GetNoteIndex(note.Name);
+            int sharpOrFlat = Math.Clamp(interval - this.DistanceBetween(note), -1, 1);
+
+            note.Name = ChromaticScale.GetNoteNameFromIndex(newIndex + sharpOrFlat, sharpOrFlat);
+
+            int rootNoteChromaticIndex = ChromaticScale.GetNoteIndex(Name[0].ToString());
+            int noteIndex = ChromaticScale.GetNoteIndex(note.Name[0].ToString());
+
+            Note a = new Note
+            {
+                Name = ChromaticScale.GetNoteNameFromIndex(rootNoteChromaticIndex),
+                Octave = Octave
+            };
+            Note b = new Note
+            {
+                Name = ChromaticScale.GetNoteNameFromIndex(noteIndex),
+                Octave = note.Octave
+            };
+
+            int intervalDist = a.DistanceBetween(b);
+            int noteDist = this.DistanceBetween(note);
+
+            if (ChromaticScale.NormalizeInterval(intervalDist) != ChromaticScale.NormalizeInterval(noteDist))
+            {
+                note = note.EnharmonicEquivalent();
+            }
 
             return note;
+        }
+
+        public Note EnharmonicEquivalent()
+        {
+            int chromaticIndex = ChromaticScale.GetNoteIndex(Name);
+            List<string> equivalents = ChromaticScale.GetNoteNamesFromIndex(chromaticIndex);
+
+            string name = (equivalents.Count > 1) ? equivalents.First(e => e[0].ToString() != Name[0].ToString()) : equivalents.First();
+
+            int octave = Octave;
+
+            // I'm not sure where in the chromatic scale B# and Cb fall.
+            // This makes B# the first note of the chromatic scale and Cb the last.
+            if (name == "Bsharp")
+            {
+                octave--;
+            }
+            else if (name == "Cflat")
+            {
+                octave++;
+            }
+
+            Note n = new Note
+            {
+                Name = name,
+                Octave = octave
+            };
+
+            return n;
         }
 
         public static bool AreEnharmonicallyEqual(Note a, Note b)

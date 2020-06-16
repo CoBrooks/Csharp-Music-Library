@@ -21,10 +21,14 @@ namespace MusicLib.Core
         public const int MinorSeventh = 10;
         public const int MajorSeventh = 11;
         public const int PerfectOctave = 12;
-        public const int MinorNinth = 13;
-        public const int MajorNinth = 14;
+        public const int FlatNinth = 13;
+        public const int Ninth = 14;
+        public const int SharpNinth = 15;
+        public const int FlatEleventh = 16;
         public const int Eleventh = 17;
-        public const int MinorThirteenth = 20;
-        public const int MajorThirteenth = 21;
+        public const int SharpEleventh = 18;
+        public const int FlatThirteenth = 20;
+        public const int Thirteenth = 21;
+        public const int SharpThirteenth = 22;
     }
 }

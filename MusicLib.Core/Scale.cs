@@ -55,20 +55,92 @@ namespace MusicLib.Core
             }
         }
 
-        public static string GetNoteNameFromIndex(int interval)
+        public static string GetNoteNameFromIndex(int index, int sharpOrFlat = 0)
         {
-            interval %= 12;
+            index %= 12;
 
             try
             {
                 List<FieldInfo> fields = typeof(ChromaticScale).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).ToList();
-                var name = fields.First(f => (int)f.GetValue(null) == interval).Name;
+
+                string name;
+
+                if (sharpOrFlat == -1) // Note should be flat
+                {
+                    name = fields.First(f => (int)f.GetValue(null) == index && f.Name.Contains("flat")).Name;
+                }
+                else if (sharpOrFlat == 1) // Note should be sharp
+                {
+                    name = fields.First(f => (int)f.GetValue(null) == index && f.Name.Contains("sharp")).Name;
+                }
+                else // No change
+                {
+                    name = fields.First(f => (int)f.GetValue(null) == index).Name;
+                }
 
                 return name;
             }
             catch (Exception e)
             {
-                throw new Exception($"Interval not Recognized: {interval}");
+                throw new Exception($"Interval not Recognized: {index}");
+            }
+        }
+
+        public static List<string> GetNoteNamesFromIndex(int index)
+        {
+            index %= 12;
+
+            try
+            {
+                List<FieldInfo> fields = typeof(ChromaticScale).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).ToList();
+                var name = fields.Where(f => (int)f.GetValue(null) == index).Select(x => x.Name);
+
+                return name.ToList();
+            }
+            catch (Exception e)
+            {
+                throw new Exception($"Interval not Recognized: {index}");
+            }
+        }
+
+        // Removes sharp/flat from interval. ex: Sharp 11 -> 11
+        public static int NormalizeInterval(int interval)
+        {
+            switch (interval)
+            {
+                case 1: 
+                case 2:
+                    return 2;
+                case 3: 
+                case 4:
+                    return 4;
+                case 5:
+                case 6:
+                    return 5;
+                case 7:
+                    return 7;
+                case 8:
+                case 9:
+                    return 9;
+                case 10:
+                case 11:
+                    return 11;
+                case 12:
+                    return 12;
+                case 13:
+                case 14:
+                case 15:
+                    return 14;
+                case 16:
+                case 17:
+                case 18:
+                    return 17;
+                case 20:
+                case 21:
+                case 22:
+                    return 21;
+                default:
+                    return interval;
             }
         }
     }
